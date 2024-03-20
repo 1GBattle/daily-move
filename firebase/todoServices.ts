@@ -3,7 +3,10 @@ import { getDocs, query, setDoc, where, collection } from 'firebase/firestore'
 import { db } from './firebase'
 import { deleteDoc, doc } from 'firebase/firestore'
 
-export const getTodos = async (uid: string) => {
+export const getTodos = async (uid?: string) => {
+	if (!uid) {
+		throw new Error('No user id provided')
+	}
 	const todos: TodoModel[] = []
 	const docRef = collection(db, 'todos')
 	const q = query(docRef, where('uid', '==', uid))
@@ -20,17 +23,17 @@ export const getTodos = async (uid: string) => {
 	return todos
 }
 
-export const addTodo = async (todo: TodoModel) => {
+export const addTodoToFirebase = async (todo: TodoModel) => {
 	return await setDoc(doc(db, 'todos', todo.id), todo).then(() => {
 		return todo
 	})
 }
 
-export const removeTodo = async (id: string) => {
+export const removeTodoFromFirebase = async (id: string) => {
 	await deleteDoc(doc(db, 'todos', id))
 }
 
-export const updateTodo = async (id: string, todo: TodoModel) => {
+export const updateTodoInFirebase = async (id: string, todo: TodoModel) => {
 	return await setDoc(doc(db, 'todos', id), todo).then(() => {
 		return todo
 	})

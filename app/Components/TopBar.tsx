@@ -20,7 +20,7 @@ export default function TopBar() {
 	const handleLogout = async () => {
 		await signOutUser().then(() => {
 			userState.logout()
-			todoState.initializeStore([])
+			todoState.clearStore()
 			router.push('/login')
 		})
 	}

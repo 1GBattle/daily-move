@@ -80,7 +80,7 @@ export default function TodoCategoriesList() {
 
 	useEffect(() => {
 		setVisibleTodos(todoState.todos)
-	}, [])
+	}, [todoState.todos])
 
 	return (
 		<div className='p-2 grid grid-cols-3 gap-4 '>

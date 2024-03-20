@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 import MinTopBar from '../Components/MinTopBar'
 import { useTodoStore, useUserStore } from '../state/store'
-import { addTodo } from '@/firebase/todoServices'
 import dayjs from 'dayjs'
 
 export default function NewTodoPage() {
@@ -32,7 +31,7 @@ export default function NewTodoPage() {
 		}
 
 		try {
-			await addTodo(todo).then(() => {
+			await todoState.addTodo(todo).then(() => {
 				todoState.addTodo(todo)
 				router.push('/')
 			})

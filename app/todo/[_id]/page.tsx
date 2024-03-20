@@ -2,7 +2,6 @@
 import { MouseEvent } from 'react'
 import MinTopBar from '@/app/Components/MinTopBar'
 import { useTodoStore, useUserStore } from '@/app/state/store'
-import { removeTodo, updateTodo } from '@/firebase/todoServices'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
@@ -24,18 +23,18 @@ export default function TodoPage() {
 	const [dueDate, setDueDate] = useState<string>(currentTodo!.dueDate)
 	const [isUrgent, setIsUrgent] = useState<boolean>(currentTodo!.isUrgent)
 
-	const handleDelete = async (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		e.stopPropagation()
+	// const handleDelete = async (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	// 	e.stopPropagation()
 
-		await removeTodo(id).then(() => {
-			router.push('/')
-		})
-		todoState.removeTodo(id)
-		router.push('/')
-	}
+	// 	await removeTodo(id).then(() => {
+	// 		router.push('/')
+	// 	})
+	// 	todoState.removeTodo(id)
+	// 	router.push('/')
+	// }
 
 	const handleUpdateTodo = async () => {
-		await updateTodo(id, {
+		await todoState.updateTodo(id, {
 			id,
 			uid: userState.user?.uid!,
 			title,
@@ -43,18 +42,8 @@ export default function TodoPage() {
 			dueDate,
 			isUrgent,
 			completed: currentTodo!.completed
-		}).then(() => {
-			todoState.updateTodo(id, {
-				id,
-				uid: userState.user?.uid!,
-				title,
-				description,
-				dueDate,
-				isUrgent,
-				completed: currentTodo!.completed
-			})
-			router.push('/')
 		})
+		router.push('/')
 	}
 
 	useEffect(() => {

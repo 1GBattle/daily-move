@@ -32,7 +32,7 @@ export default function Home() {
 
 		if (user?.uid) {
 			const handleGetData = async () => {
-				todoState.initializeStore(await getTodos(user!.uid).then((todos) => todos))
+				todoState.initializeStore(user.uid)
 			}
 			handleGetData()
 		}
