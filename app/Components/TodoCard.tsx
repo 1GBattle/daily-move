@@ -1,10 +1,10 @@
 import { FcClock } from 'react-icons/fc'
 import TodoModel from '../models/todoModel'
-import { FaEdit } from 'react-icons/fa'
+import { FaEdit, FaTrash } from 'react-icons/fa'
 import Link from 'next/link'
 import { removeTodo, updateTodo } from '@/firebase/todoServices'
 import { useTodoStore } from '../state/store'
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import dayjs from 'dayjs'
 
 interface TodoCardProps {
@@ -15,7 +15,11 @@ export default function TodoCard({ todo }: TodoCardProps) {
 	const todoState = useTodoStore((state) => state)
 	const [isCompleted, setIsCompleted] = useState<boolean>(todo.completed)
 
-	const handleDelete = async () => {
+	const handleDelete = async (
+		e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+	) => {
+		e.stopPropagation()
+
 		await removeTodo(todo.id).then(() => {
 			todoState.removeTodo(todo.id)
 		})
@@ -36,7 +40,9 @@ export default function TodoCard({ todo }: TodoCardProps) {
 	}
 
 	return (
-		<div className='shadow-md w-full h-16 p-2 hover:shadow-lg'>
+		<Link
+			href={`/todo/${todo.id}`}
+			className='shadow-md w-full h-16 p-2 hover:shadow-lg'>
 			<div className='flex flex-row gap-2 mr-2 items-center'>
 				<input
 					className='h-5 w-5 accent-indigo-500 '
@@ -51,9 +57,9 @@ export default function TodoCard({ todo }: TodoCardProps) {
 				<div className='flex flex-row items-center -m-1'>
 					{/* <FcClock className='mr-1' /> */}
 					<p>{dayjs(todo.dueDate).format('MM/D')}</p>
-					<Link href={`/todo/${todo.id}`}>
-						<FaEdit className='ml-4' />
-					</Link>
+					<button onClick={(e) => handleDelete(e)}>
+						<FaTrash className='ml-4 h-6 w-6' />
+					</button>
 				</div>
 			</div>
 
@@ -62,6 +68,6 @@ export default function TodoCard({ todo }: TodoCardProps) {
 					{todo.description ? todo.description : 'No Description Provided'}
 				</p>
 			</div>
-		</div>
+		</Link>
 	)
 }

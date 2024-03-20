@@ -1,4 +1,5 @@
 'use client'
+import { MouseEvent } from 'react'
 import MinTopBar from '@/app/Components/MinTopBar'
 import { useTodoStore, useUserStore } from '@/app/state/store'
 import { removeTodo, updateTodo } from '@/firebase/todoServices'
@@ -23,11 +24,14 @@ export default function TodoPage() {
 	const [dueDate, setDueDate] = useState<string>(currentTodo!.dueDate)
 	const [isUrgent, setIsUrgent] = useState<boolean>(currentTodo!.isUrgent)
 
-	const handleDelete = async () => {
+	const handleDelete = async (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.stopPropagation()
+
 		await removeTodo(id).then(() => {
-			todoState.removeTodo(id)
 			router.push('/')
 		})
+		todoState.removeTodo(id)
+		router.push('/')
 	}
 
 	const handleUpdateTodo = async () => {
@@ -57,7 +61,11 @@ export default function TodoPage() {
 		if (!userState.user?.uid) {
 			router.push('/login')
 		}
-	})
+
+		if (!currentTodo?.title) {
+			router.push('/')
+		}
+	}, [])
 
 	return (
 		<div className='h-screen flex flex-col'>
@@ -108,11 +116,6 @@ export default function TodoPage() {
 			</form>
 
 			<div className='flex justify-between gap-2 p-4 items-center'>
-				<button
-					onClick={() => handleDelete()}
-					className='w-full bg-red-400 text-white text-xl h-12 rounded-md focus:outline-none hover:bg-red-500 active:bg-red-600 transition-colors duration-300 ease-in-out'>
-					Delete
-				</button>
 				<button
 					className='w-full bg-indigo-400 text-white text-xl h-12 rounded-md focus:outline-none hover:bg-indigo-500 transition-colors duration-300 ease-in-out'
 					onClick={() => handleUpdateTodo()}>

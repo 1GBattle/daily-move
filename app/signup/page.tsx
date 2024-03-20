@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useUserStore } from '../state/store'
 import { useState } from 'react'
-import { signUpUser } from '@/firebase/userServices'
+import { loginUserWithGoogle, signUpUser } from '@/firebase/userServices'
 import UserModel from '../models/userModel'
 import { useRouter } from 'next/navigation'
 
@@ -29,8 +29,20 @@ export default function () {
 		)
 	}
 
+	const handleGoogleLogin = () => {
+		loginUserWithGoogle().then((user) => {
+			if (user instanceof Error || user === null) {
+				console.log(user!.message)
+				return
+			} else {
+				userState.setUser(user)
+				router.push('/')
+			}
+		})
+	}
+
 	return (
-		<div className='h-screen flex gap-20 flex-col justify-center items-center -mt-8'>
+		<div className='h-screen flex gap-14 flex-col justify-center items-center'>
 			<div className='flex flex-col justify-center items-center'>
 				<Image priority src='/logo.png' alt='logo' width={180} height={180} />
 				<h2 className='text-xl mt-8 text-center'>
@@ -90,7 +102,7 @@ export default function () {
 			</form>
 
 			<div>
-				<button>
+				<button onClick={() => handleGoogleLogin()}>
 					<Image
 						className='w-80 -mt-8 h-16 rounded-md focus:outline-none hover:bg-indigo-500 transition-colors duration-300 ease-in-out'
 						src='/google-signin.png'
