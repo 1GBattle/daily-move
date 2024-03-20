@@ -29,17 +29,18 @@ export default function TodoCard({ todo }: TodoCardProps) {
 		e.stopPropagation()
 		e.nativeEvent.stopImmediatePropagation()
 		e.preventDefault()
-		await todoState.updateTodo(todo.id, {
-			...todo,
-			completed: !isCompleted
-		})
+		await todoState
+			.updateTodo(todo.id, {
+				...todo,
+				completed: !isCompleted
+			})
+			.then(() => router.push('/'))
 
 		setIsCompleted(!todo.completed)
 	}
 
 	return (
 		<div
-			// href={`/todo/${todo.id}`}
 			onClick={() => router.push(`/todo/${todo.id}`)}
 			className='shadow-md w-full h-16 p-2 hover:shadow-lg'>
 			<div className='flex flex-row gap-2 mr-2 items-center'>
