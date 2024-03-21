@@ -1,11 +1,18 @@
 'use client'
 import { VisibleTodosContext } from '../Contexts/VisibleTodosContext'
+import TodoModel from '../models/todoModel'
+import { useTodoStore } from '../state/store'
 import TodoCard from './TodoCard'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 export default function TodoList() {
 	const { visibleTodos } = useContext(VisibleTodosContext)
-	const data = visibleTodos
+	const todoState = useTodoStore((state) => state)
+	const [data, setData] = useState([] as TodoModel[])
+
+	useEffect(() => {
+		setData(todoState.todos)
+	}, [todoState.todos])
 
 	return (
 		<div className='flex flex-col gap-5 justify-center p-1'>

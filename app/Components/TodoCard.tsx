@@ -45,7 +45,7 @@ export default function TodoCard({ todo }: TodoCardProps) {
 			className='shadow-md w-full h-16 p-2 hover:shadow-lg'>
 			<div className='flex flex-row gap-2 mr-2 items-center'>
 				<input
-					className='h-5 w-5 accent-indigo-500 '
+					className='h-6 w-6 accent-indigo-500 '
 					type='checkbox'
 					checked={isCompleted}
 					onChange={(e) => handleToggleCompelted(e)}

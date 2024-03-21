@@ -15,6 +15,7 @@ interface TodoStoreState {
 	updateTodo: (id: string, todo: TodoModel) => Promise<void>
 	initializeStore: (id: string) => Promise<void>
 	clearStore: () => void
+	setTodos: (todos: TodoModel[]) => void
 }
 
 interface UserStoreState {
@@ -45,7 +46,8 @@ export const useTodoStore = create<TodoStoreState>()((set) => ({
 			set((state) => ({ todos: state.todos.map((t) => (t.id === id ? todo : t)) }))
 		})
 	},
-	clearStore: () => set({ todos: [] })
+	clearStore: () => set({ todos: [] }),
+	setTodos: (todos) => set({ todos })
 }))
 
 export const useUserStore = create<UserStoreState>()((set) => ({
