@@ -55,18 +55,30 @@ export default function TodoCategoriesList() {
 				setActiveCategory('All')
 				break
 			case 'Urgent':
+				todoState.initializeStore(userState.user?.uid!)
+				setActiveCategory('All')
+
 				todoState.setTodos(todoState.todos.filter((todo) => todo.isUrgent))
 				setActiveCategory('Urgent')
 				break
 			case 'Overdue':
+				todoState.initializeStore(userState.user?.uid!)
+				setActiveCategory('All')
+
 				todoState.setTodos(todosOverdue)
 				setActiveCategory('Overdue')
 				break
 			case 'Due Today':
+				todoState.initializeStore(userState.user?.uid!)
+				setActiveCategory('All')
+
 				todoState.setTodos(todosDueToday)
 				setActiveCategory('Due Today')
 				break
 			case 'Due This Week':
+				todoState.initializeStore(userState.user?.uid!)
+				setActiveCategory('All')
+
 				todoState.setTodos(todosDueThisWeek)
 				setActiveCategory('Due This Week')
 				break
