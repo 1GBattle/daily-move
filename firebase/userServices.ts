@@ -29,6 +29,9 @@ export const loginUser = async (email: string, password: string) => {
 
 export const loginUserWithGoogle = async () => {
 	const authProvider = new GoogleAuthProvider()
+	authProvider.setCustomParameters({
+		prompt: "select_account"
+	})
 	try {
 		let user = null as UserModel | null
 		return await signInWithPopup(auth, authProvider).then((result) => {
